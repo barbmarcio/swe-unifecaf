@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TaskFlow - Gerenciamento de Tarefas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -12,220 +13,438 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f4f5f7;
             min-height: 100vh;
-            padding: 20px;
         }
 
-        .container {
-            max-width: 1200px;
+        /* Header estilo Jira */
+        .app-header {
+            background: #0052CC;
+            color: white;
+            padding: 16px 24px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1400px;
             margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-title h1 {
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+        }
+
+        .project-badge {
+            background: rgba(255,255,255,0.15);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .header-info {
+            font-size: 12px;
+            color: rgba(255,255,255,0.8);
+        }
+
+        /* Container principal */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            color: #5e6c84;
+            font-size: 12px;
+            margin-bottom: 16px;
+        }
+
+        .breadcrumb a {
+            color: #5e6c84;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            color: #0052CC;
+            text-decoration: underline;
+        }
+
+        /* Stats Cards */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
             background: white;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            padding: 30px;
+            border: 1px solid #dfe1e6;
+            border-radius: 3px;
+            padding: 16px;
+            transition: box-shadow 0.2s;
         }
 
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #667eea;
+        .stat-card:hover {
+            box-shadow: 0 1px 4px rgba(0,0,0,0.1);
         }
 
-        h1 {
-            color: #667eea;
-            margin-bottom: 10px;
+        .stat-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #5e6c84;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
         }
 
-        .subtitle {
-            color: #666;
-            font-size: 14px;
+        .stat-number {
+            font-size: 28px;
+            font-weight: 600;
+            color: #172b4d;
         }
 
-        .task-form {
-            background: #f8f9fa;
+        /* Task Form */
+        .task-form-section {
+            background: white;
+            border: 1px solid #dfe1e6;
+            border-radius: 3px;
             padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 30px;
+            margin-bottom: 24px;
+        }
+
+        .form-header {
+            font-size: 14px;
+            font-weight: 600;
+            color: #172b4d;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-grid {
+            display: grid;
+            gap: 12px;
         }
 
         .form-row {
             display: grid;
             grid-template-columns: 2fr 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 10px;
+            gap: 12px;
         }
 
-        input, select, textarea, button {
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+        input, select, textarea {
+            padding: 8px 10px;
+            border: 2px solid #dfe1e6;
+            border-radius: 3px;
             font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            transition: border-color 0.2s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #0052CC;
         }
 
         textarea {
-            width: 100%;
             resize: vertical;
             min-height: 60px;
         }
 
         button {
-            background: #667eea;
+            background: #0052CC;
             color: white;
             border: none;
+            padding: 8px 16px;
+            border-radius: 3px;
+            font-size: 14px;
+            font-weight: 500;
             cursor: pointer;
-            font-weight: bold;
-            transition: background 0.3s;
+            transition: background 0.2s;
         }
 
         button:hover {
-            background: #5568d3;
+            background: #0747A6;
         }
 
+        /* Board Header */
+        .board-header {
+            margin-bottom: 16px;
+        }
+
+        .board-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #172b4d;
+            margin-bottom: 8px;
+        }
+
+        /* Kanban Board */
         .kanban-board {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
+            gap: 16px;
         }
 
         .kanban-column {
-            background: #f8f9fa;
-            border-radius: 8px;
-            padding: 15px;
+            background: #f4f5f7;
+            border-radius: 3px;
+            padding: 0;
         }
 
         .column-header {
-            font-weight: bold;
-            margin-bottom: 15px;
-            padding: 10px;
-            border-radius: 5px;
-            text-align: center;
+            padding: 12px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #5e6c84;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #dfe1e6;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .todo-header {
-            background: #ffd93d;
-            color: #333;
+        .column-count {
+            background: #dfe1e6;
+            color: #5e6c84;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
         }
 
-        .inprogress-header {
-            background: #6bcf7f;
-            color: white;
+        .column-content {
+            padding: 8px;
+            min-height: 400px;
         }
 
-        .done-header {
-            background: #4d94ff;
-            color: white;
-        }
-
+        /* Task Cards estilo Jira */
         .task-card {
             background: white;
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border: 1px solid #dfe1e6;
+            border-radius: 3px;
+            padding: 12px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .task-card:hover {
+            background: #f4f5f7;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+        }
+
+        .task-id {
+            font-size: 11px;
+            color: #5e6c84;
+            font-weight: 500;
+            margin-bottom: 4px;
         }
 
         .task-title {
-            font-weight: bold;
-            margin-bottom: 5px;
-            color: #333;
+            font-size: 14px;
+            font-weight: 500;
+            color: #172b4d;
+            margin-bottom: 6px;
+            line-height: 1.4;
         }
 
         .task-description {
-            font-size: 13px;
-            color: #666;
+            font-size: 12px;
+            color: #5e6c84;
             margin-bottom: 10px;
+            line-height: 1.5;
         }
 
         .task-meta {
             display: flex;
             justify-content: space-between;
-            font-size: 12px;
-            color: #888;
+            align-items: center;
+            font-size: 11px;
+            margin-bottom: 8px;
         }
 
+        .task-assignee {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #5e6c84;
+        }
+
+        .assignee-avatar {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #0052CC;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        /* Priority badges estilo Jira */
         .priority {
-            padding: 2px 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 6px;
             border-radius: 3px;
-            font-weight: bold;
+            font-weight: 500;
             font-size: 11px;
         }
 
-        .priority-baixa { background: #e3f2fd; color: #1976d2; }
-        .priority-media { background: #fff3e0; color: #f57c00; }
-        .priority-alta { background: #ffebee; color: #c62828; }
-        .priority-critica { background: #f3e5f5; color: #7b1fa2; }
+        .priority-icon {
+            width: 12px;
+            height: 12px;
+        }
 
+        .priority-baixa {
+            background: #e3fcef;
+            color: #006644;
+        }
+
+        .priority-media {
+            background: #fff7e6;
+            color: #ff991f;
+        }
+
+        .priority-alta {
+            background: #ffebe6;
+            color: #de350b;
+        }
+
+        .priority-critica {
+            background: #ffebe6;
+            color: #bf2600;
+            font-weight: 600;
+        }
+
+        /* Task Actions */
         .task-actions {
-            margin-top: 10px;
             display: flex;
-            gap: 5px;
+            gap: 4px;
+            padding-top: 8px;
+            border-top: 1px solid #f4f5f7;
         }
 
-        .btn-small {
-            padding: 5px 10px;
-            font-size: 12px;
+        .btn-action {
+            padding: 4px 8px;
+            font-size: 11px;
+            background: #f4f5f7;
+            color: #5e6c84;
+            border: 1px solid #dfe1e6;
+            transition: all 0.2s;
         }
 
-        .btn-danger {
-            background: #dc3545;
+        .btn-action:hover {
+            background: #ebecf0;
+            color: #172b4d;
         }
 
-        .btn-danger:hover {
-            background: #c82333;
+        .btn-delete {
+            background: #ffebe6;
+            color: #de350b;
+            border-color: #de350b;
         }
 
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-            margin-bottom: 20px;
+        .btn-delete:hover {
+            background: #de350b;
+            color: white;
         }
 
-        .stat-card {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
+        /* Status column specific colors */
+        .todo-header {
+            border-bottom-color: #0052CC;
+        }
+
+        .inprogress-header {
+            border-bottom-color: #ff991f;
+        }
+
+        .done-header {
+            border-bottom-color: #00875a;
+        }
+
+        /* Empty state */
+        .empty-state {
             text-align: center;
+            padding: 40px 20px;
+            color: #8993a4;
+            font-size: 13px;
         }
 
-        .stat-number {
-            font-size: 28px;
-            font-weight: bold;
-            color: #667eea;
-        }
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .kanban-board {
+                grid-template-columns: 1fr;
+            }
 
-        .stat-label {
-            font-size: 12px;
-            color: #666;
-            margin-top: 5px;
+            .stats-bar {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>🚀 TaskFlow</h1>
-            <div class="subtitle">Sistema de Gerenciamento de Tarefas - TechFlow Solutions</div>
-            <div class="subtitle">Desenvolvido por: Marcio Costa Barbosa (RA: 190093)</div>
-        </header>
+    <!-- Header estilo Jira -->
+    <div class="app-header">
+        <div class="header-content">
+            <div class="header-title">
+                <h1>TaskFlow</h1>
+                <span class="project-badge">TFL</span>
+            </div>
+            <div class="header-info">
+                Marcio Costa Barbosa (RA: 190093) • Software Engineering
+            </div>
+        </div>
+    </div>
 
-        <div class="stats" id="stats">
-            <!-- Stats serão inseridas via JavaScript -->
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Breadcrumb -->
+        <div class="breadcrumb">
+            <a href="#">Projetos</a> / <a href="#">TechFlow Solutions</a> / <strong>Board</strong>
         </div>
 
-        <div class="task-form">
-            <h3>➕ Nova Tarefa</h3>
-            <form id="taskForm">
+        <!-- Stats -->
+        <div class="stats-bar" id="stats">
+            <!-- Stats inseridas via JavaScript -->
+        </div>
+
+        <!-- Create Task Form -->
+        <div class="task-form-section">
+            <div class="form-header">
+                <span>➕</span> Criar Nova Tarefa
+            </div>
+            <form id="taskForm" class="form-grid">
                 <div class="form-row">
-                    <input type="text" id="title" placeholder="Título da tarefa" required>
+                    <input type="text" id="title" placeholder="Título da tarefa *" required>
                     <select id="priority">
-                        <option value="baixa">Baixa</option>
-                        <option value="media" selected>Média</option>
-                        <option value="alta">Alta</option>
-                        <option value="critica">Crítica</option>
+                        <option value="baixa">Prioridade: Baixa</option>
+                        <option value="media" selected>Prioridade: Média</option>
+                        <option value="alta">Prioridade: Alta</option>
+                        <option value="critica">Prioridade: Crítica</option>
                     </select>
                     <select id="status">
                         <option value="a_fazer" selected>A Fazer</option>
@@ -234,35 +453,49 @@
                     </select>
                 </div>
                 <textarea id="description" placeholder="Descrição (opcional)"></textarea>
-                <div class="form-row" style="margin-top: 10px;">
+                <div class="form-row">
                     <input type="text" id="assignee" placeholder="Responsável">
-                    <input type="date" id="due_date">
-                    <button type="submit">Adicionar Tarefa</button>
+                    <input type="date" id="due_date" placeholder="Data de vencimento">
+                    <button type="submit">Criar Tarefa</button>
                 </div>
             </form>
         </div>
 
+        <!-- Board -->
+        <div class="board-header">
+            <div class="board-title">Board</div>
+        </div>
+
         <div class="kanban-board">
             <div class="kanban-column">
-                <div class="column-header todo-header">📝 A Fazer</div>
-                <div id="todo-tasks"></div>
+                <div class="column-header todo-header">
+                    <span>A Fazer</span>
+                    <span class="column-count" id="todo-count">0</span>
+                </div>
+                <div class="column-content" id="todo-tasks"></div>
             </div>
+
             <div class="kanban-column">
-                <div class="column-header inprogress-header">⚡ Em Progresso</div>
-                <div id="inprogress-tasks"></div>
+                <div class="column-header inprogress-header">
+                    <span>Em Progresso</span>
+                    <span class="column-count" id="progress-count">0</span>
+                </div>
+                <div class="column-content" id="inprogress-tasks"></div>
             </div>
+
             <div class="kanban-column">
-                <div class="column-header done-header">✅ Concluído</div>
-                <div id="done-tasks"></div>
+                <div class="column-header done-header">
+                    <span>Concluído</span>
+                    <span class="column-count" id="done-count">0</span>
+                </div>
+                <div class="column-content" id="done-tasks"></div>
             </div>
         </div>
     </div>
 
     <script>
-        // Carregar tarefas ao iniciar
         loadTasks();
 
-        // Enviar formulário
         document.getElementById('taskForm').addEventListener('submit', async (e) => {
             e.preventDefault();
 
@@ -296,24 +529,30 @@
                 const response = await fetch('/api/tasks');
                 const tasks = await response.json();
 
-                // Limpar colunas
                 document.getElementById('todo-tasks').innerHTML = '';
                 document.getElementById('inprogress-tasks').innerHTML = '';
                 document.getElementById('done-tasks').innerHTML = '';
 
-                // Organizar tarefas por status
-                tasks.forEach(task => {
-                    const taskCard = createTaskCard(task);
-                    if (task.status === 'a_fazer') {
-                        document.getElementById('todo-tasks').appendChild(taskCard);
-                    } else if (task.status === 'em_progresso') {
-                        document.getElementById('inprogress-tasks').appendChild(taskCard);
-                    } else {
-                        document.getElementById('done-tasks').appendChild(taskCard);
-                    }
+                const todoTasks = tasks.filter(t => t.status === 'a_fazer');
+                const progressTasks = tasks.filter(t => t.status === 'em_progresso');
+                const doneTasks = tasks.filter(t => t.status === 'concluido');
+
+                document.getElementById('todo-count').textContent = todoTasks.length;
+                document.getElementById('progress-count').textContent = progressTasks.length;
+                document.getElementById('done-count').textContent = doneTasks.length;
+
+                todoTasks.forEach(task => {
+                    document.getElementById('todo-tasks').appendChild(createTaskCard(task));
                 });
 
-                // Atualizar stats
+                progressTasks.forEach(task => {
+                    document.getElementById('inprogress-tasks').appendChild(createTaskCard(task));
+                });
+
+                doneTasks.forEach(task => {
+                    document.getElementById('done-tasks').appendChild(createTaskCard(task));
+                });
+
                 updateStats(tasks);
             } catch (error) {
                 console.error('Erro ao carregar tarefas:', error);
@@ -324,18 +563,35 @@
             const card = document.createElement('div');
             card.className = 'task-card';
 
+            const initials = task.assignee
+                ? task.assignee.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()
+                : '?';
+
+            const priorityText = {
+                'baixa': 'Baixa',
+                'media': 'Média',
+                'alta': 'Alta',
+                'critica': 'Crítica'
+            };
+
             card.innerHTML = `
+                <div class="task-id">TFL-${task.id}</div>
                 <div class="task-title">${task.title}</div>
-                <div class="task-description">${task.description || 'Sem descrição'}</div>
+                ${task.description ? `<div class="task-description">${task.description}</div>` : ''}
                 <div class="task-meta">
-                    <span class="priority priority-${task.priority}">${task.priority.toUpperCase()}</span>
-                    <span>${task.assignee || 'Sem responsável'}</span>
+                    <span class="priority priority-${task.priority}">${priorityText[task.priority]}</span>
+                    ${task.assignee ? `
+                        <div class="task-assignee">
+                            <div class="assignee-avatar">${initials}</div>
+                            <span>${task.assignee}</span>
+                        </div>
+                    ` : ''}
                 </div>
                 <div class="task-actions">
-                    <button class="btn-small" onclick="changeStatus(${task.id}, 'a_fazer')">📝</button>
-                    <button class="btn-small" onclick="changeStatus(${task.id}, 'em_progresso')">⚡</button>
-                    <button class="btn-small" onclick="changeStatus(${task.id}, 'concluido')">✅</button>
-                    <button class="btn-small btn-danger" onclick="deleteTask(${task.id})">🗑️</button>
+                    <button class="btn-action" onclick="changeStatus(${task.id}, 'a_fazer')" title="Mover para A Fazer">A Fazer</button>
+                    <button class="btn-action" onclick="changeStatus(${task.id}, 'em_progresso')" title="Mover para Em Progresso">Progresso</button>
+                    <button class="btn-action" onclick="changeStatus(${task.id}, 'concluido')" title="Mover para Concluído">Concluir</button>
+                    <button class="btn-action btn-delete" onclick="deleteTask(${task.id})" title="Deletar">Deletar</button>
                 </div>
             `;
 
@@ -376,20 +632,20 @@
 
             document.getElementById('stats').innerHTML = `
                 <div class="stat-card">
+                    <div class="stat-label">Total</div>
                     <div class="stat-number">${stats.total}</div>
-                    <div class="stat-label">Total de Tarefas</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number">${stats.todo}</div>
                     <div class="stat-label">A Fazer</div>
+                    <div class="stat-number">${stats.todo}</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number">${stats.inProgress}</div>
                     <div class="stat-label">Em Progresso</div>
+                    <div class="stat-number">${stats.inProgress}</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number">${stats.done}</div>
                     <div class="stat-label">Concluídas</div>
+                    <div class="stat-number">${stats.done}</div>
                 </div>
             `;
         }
