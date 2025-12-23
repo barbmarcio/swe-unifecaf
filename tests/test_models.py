@@ -136,3 +136,52 @@ class TestTaskManager:
         """Teste deletar tarefa inexistente"""
         result = self.manager.delete_task(9999)
         assert result is False
+
+    def test_filter_by_status(self):
+        """Teste filtrar tarefas por status"""
+        self.manager.create_task(title="Task 1", status="a_fazer")
+        self.manager.create_task(title="Task 2", status="em_progresso")
+        self.manager.create_task(title="Task 3", status="a_fazer")
+
+        filtered = self.manager.filter_tasks(status="a_fazer")
+        assert len(filtered) == 2
+
+    def test_filter_by_priority(self):
+        """Teste filtrar tarefas por prioridade"""
+        self.manager.create_task(title="Task 1", priority="baixa")
+        self.manager.create_task(title="Task 2", priority="alta")
+        self.manager.create_task(title="Task 3", priority="alta")
+
+        filtered = self.manager.filter_tasks(priority="alta")
+        assert len(filtered) == 2
+
+    def test_filter_by_assignee(self):
+        """Teste filtrar tarefas por responsável"""
+        self.manager.create_task(title="Task 1", assignee="João")
+        self.manager.create_task(title="Task 2", assignee="Maria")
+        self.manager.create_task(title="Task 3", assignee="João Silva")
+
+        filtered = self.manager.filter_tasks(assignee="João")
+        assert len(filtered) == 2
+
+    def test_filter_multiple_criteria(self):
+        """Teste filtrar com múltiplos critérios"""
+        self.manager.create_task(
+            title="Task 1",
+            status="em_progresso",
+            priority="alta",
+            assignee="João"
+        )
+        self.manager.create_task(
+            title="Task 2",
+            status="em_progresso",
+            priority="baixa",
+            assignee="Maria"
+        )
+
+        filtered = self.manager.filter_tasks(
+            status="em_progresso",
+            priority="alta"
+        )
+        assert len(filtered) == 1
+        assert filtered[0].title == "Task 1"
