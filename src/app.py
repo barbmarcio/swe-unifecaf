@@ -18,8 +18,17 @@ def index():
 
 @app.route('/api/tasks', methods=['GET'])
 def get_tasks():
-    """Lista todas as tarefas"""
-    tasks = task_manager.get_all_tasks()
+    """Lista todas as tarefas ou filtra por critérios"""
+    # Mudança de Escopo - Sprint 2: Adição de filtros
+    status = request.args.get('status')
+    priority = request.args.get('priority')
+    assignee = request.args.get('assignee')
+
+    if status or priority or assignee:
+        tasks = task_manager.filter_tasks(status, priority, assignee)
+    else:
+        tasks = task_manager.get_all_tasks()
+
     return jsonify([task.to_dict() for task in tasks])
 
 

@@ -105,3 +105,29 @@ class TaskManager:
             self.tasks.remove(task)
             return True
         return False
+
+    def filter_tasks(
+        self,
+        status: Optional[str] = None,
+        priority: Optional[str] = None,
+        assignee: Optional[str] = None
+    ) -> List[Task]:
+        """
+        Filtra tarefas por critérios
+        Mudança de Escopo - Sprint 2
+        """
+        filtered = self.tasks
+
+        if status:
+            filtered = [t for t in filtered if t.status == status.lower()]
+
+        if priority:
+            filtered = [t for t in filtered if t.priority == priority.lower()]
+
+        if assignee:
+            filtered = [
+                t for t in filtered
+                if assignee.lower() in t.assignee.lower()
+            ]
+
+        return filtered
